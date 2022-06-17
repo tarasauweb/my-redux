@@ -1,0 +1,28 @@
+const __INIT__ = ()=>{
+    return{
+        type:'__INIT__'
+    }
+};
+let createStore = (reducer,initialState)=>{
+    let _state = reducer(initialState , __INIT__)
+    let _subscribers = []
+
+    return{
+        getState(){
+            return _state
+        },
+
+        dispatch(action){
+            _state = reducer(_state , action)
+            _subscribers.map(item=>{
+                item()
+            })
+        },
+
+        subscribe(observer){
+            _subscribers.push(observer)
+        }
+    }
+}
+
+export default createStore
